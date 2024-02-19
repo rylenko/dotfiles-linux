@@ -1,0 +1,91 @@
+#!/bin/sh
+
+HANDLERS="browser\\ndl-audio\\ndl-video-720p\\ndl-video-1080p\\nmpv\\nnsxiv\\nadd-torrent\\nzathura"
+
+# Usage: `add_torrent <url>`
+add_torrent() {
+	pidof transmission-daemon >/dev/null \
+		|| (transmission-daemon \
+			&& notify-send "🔽 Torrent" "Starting transmission-daemon..." \
+			&& sleep 3)
+	path=$(_download_temp "$1")
+	transmission-remote -a "$path" \
+		--download-dir ~/Downloads/ \
+		--torrent-done-script torrent-done \
+		--start &&
+	notify-send "🔽 Torrent" "Torrent added."
+}
+
+# Usage: `dl_audio <url>`
+dl_audio() {
+	id=$(_extract_filename_from_url "$1")
+	notify-send "🎼 Audio downloader" "Downloading $id audio..."
+	task_id=$(nq -c yt-dlp -cix -o "$HOME/%(id)s.%(ext)s" "$1")
+	(nq -w "$task_id" && notify-send "🎼 Audio downloader" "$id audio downloaded.") \
+		|| notify-send -u critical "🎼 Audio downloader" "$id audio download failed."
+}
+
+# Usage: `dl_video <url> <quality>`
+dl_video() {
+	id=$(_extract_filename_from_url "$1")
+	notify-send "🎥 Video downloader" "Downloading $id video..."
+	task_id=$(nq -c yt-dlp -ci -o "$HOME/%(id)s.%(ext)s" -S "res:$2" "$1")
+	(nq -w "$task_id" && notify-send "🎥 Video downloader" "$id video downloaded.") \
+		|| notify-send -u critical "🎥 Video downloader" "$id video download failed."
+}
+
+# Usage: `open_in_browser <url>`
+open_in_browser() {
+	setsid -f "$BROWSER" "$1" >/dev/null 2>&1
+}
+
+# Usage: `play_with_mpv <url>`
+play_with_mpv() {
+	setsid -f mpv -quiet "$1" >/dev/null 2>&1
+}
+
+# Usage: `show_using <url> <program>`
+show_using() {
+	path=$(_download_temp "$1")
+	setsid -f "$2" "$path" >/dev/null 2>&1
+}
+
+# Usage: `_download_temp <url>`
+_download_temp() {
+	filename=$(_extract_filename_from_url "$1")
+	path="/tmp/$filename"
+	curl -sL "$1" > "$path"
+	echo "$path"
+}
+
+# Usage: `_extract_filename_from_url <url>`
+_extract_filename_from_url() {
+	filename=$(basename "$1")
+	if [ "${#filename}" -gt "255" ]; then
+		filename=$(echo "$filename" | cut -c1-255)
+	fi
+	echo "$filename"
+}
+
+if [ -n "$1" ]; then
+	url="$1"
+else
+	# shellcheck disable=SC2183
+	url=$(printf "%s" | dmenu -b -p 'Paste URL:')
+fi
+[ -z "$url" ] && exit 1
+# shellcheck disable=SC2059
+handler=$(printf "$HANDLERS" | dmenu -b -i -p "Open it with?")
+{ [ -z "$handler" ] || [ -n "${HANDLERS##*"$handler"*}" ]; } && exit 1
+
+notify-send "⏳ Link handler" "Loading $url..."
+case $handler in
+	browser) open_in_browser "$url" ;;
+	dl-audio) dl_audio  "$url" ;;
+	dl-video-720p) dl_video "$url" 720 ;;
+	dl-video-1080p) dl_video "$url" 1080 ;;
+	mpv) play_with_mpv "$url" ;;
+	nsxiv) show_using "$url" nsxiv ;;
+	add-torrent) add_torrent "$url" ;;
+	zathura) show_using "$url" zathura ;;
+esac

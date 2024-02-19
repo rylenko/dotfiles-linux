@@ -1,0 +1,5 @@
+#!/bin/sh
+
+filename="$(date +%F_%T).png"
+ffcast -q -s png "$filename" &&
+notify-send "🖼️ Screenshot Maker" "Successfully made in $filename."

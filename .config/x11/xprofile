@@ -1,0 +1,12 @@
+#!/bin/sh
+
+autostart="dunst mpd xcompmgr"
+
+pulseaudio --start
+set-wallpaper &
+sct 3700
+
+# Autostart programs
+for p in ${autostart}; do
+    pgrep -fl "${p}" || $p &
+done >/dev/null 2>&1

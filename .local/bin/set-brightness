@@ -1,0 +1,23 @@
+#!/bin/sh
+
+STEP=0.1
+
+{ [ "$1" != "+" ] && [ "$1" != "-" ]; } && echo "Use + or - argument" && exit 1
+
+# Get monitor
+monitor=$(xrandr | grep " connected" | cut -f1 -d " ")
+# Get current brightness
+current=$( \
+	xrandr --verbose --current \
+		| grep ^"$monitor" -A5 \
+		| tail -n1 \
+		| awk '{print $2}' \
+)
+# Get new brightness
+if [ "$1" = "+" ]; then
+	new=$(echo "$current $STEP" | awk '{print $1 + $2}')
+else
+	new=$(echo "$current $STEP" | awk '{print $1 - $2}')
+fi
+# Set new brighness
+xrandr --output "$monitor" --brightness "$new"

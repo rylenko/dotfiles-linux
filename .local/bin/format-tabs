@@ -1,0 +1,12 @@
+#!/bin/sh
+# Usage: `format-tabs <path1>, ..., <pathN>`
+
+for i in "$@"; do
+	if [ -d "${i}" ]; then
+		format-tabs "${i}"/*
+	else
+		printf "Formatting \"%s\"... " "${i}"
+		sed -i ":x;s|^\( *\)    |\1$(printf '\t')|;tx" "${i}"
+		printf "done\n"
+	fi
+done

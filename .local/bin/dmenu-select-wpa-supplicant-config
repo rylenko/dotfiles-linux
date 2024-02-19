@@ -1,0 +1,25 @@
+#!/bin/sh
+
+error() {
+	notify-send -u critical "🛜 WPA-Supplicant config selector" "$1"
+}
+
+move() {
+	dmenu-doas cp "$WPA_SUPPLICANT_CONFIGS_DIR/$1" \
+		"$WPA_SUPPLICANT_MAIN_CONFIG_PATH" \
+			|| (error "Failed to move \"$1\"." && exit 2)
+}
+
+restart() {
+	dmenu-doas sv restart wpa_supplicant \
+		|| (error "Failed to restart." && exit 3)
+}
+
+# Replace main config with selected and restart wpa_supplicant
+filenames=$(ls "$WPA_SUPPLICANT_CONFIGS_DIR")
+selected="$(echo "$filenames" | dmenu -b -i -p "Which config?")"
+{ [ -z "$selected" ] || [ -n "${filenames##*"$selected"*}" ]; } && exit 1
+move "$selected" &&
+restart &&
+notify-send "🛜 WPA-Supplicant config selector" \
+	"\"$selected\" selected as config."

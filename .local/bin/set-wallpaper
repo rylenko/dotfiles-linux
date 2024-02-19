@@ -1,0 +1,21 @@
+#!/bin/sh
+
+set_as_video() {
+	pgrep xwinwrap && pkill xwinwrap
+	sleep 1
+	xwinwrap -ni -b -fs -nf -ov -- \
+		mpv -mute -loop -wid WID "$CURRENT_WALLPAPER_PATH" &
+}
+
+set_as_picture() {
+	pgrep xwinwrap && pkill xwinwrap
+	xwallpaper --zoom "$CURRENT_WALLPAPER_PATH"
+}
+
+path="$(readlink -f "$CURRENT_WALLPAPER_PATH")"
+mime_type="$(file -b --mime-type "$path")"
+
+case "$mime_type" in
+	*"video"*) set_as_video ;;
+	*) set_as_picture ;;
+esac

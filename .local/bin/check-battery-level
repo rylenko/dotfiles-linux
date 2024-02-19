@@ -1,0 +1,7 @@
+#!/bin/sh
+
+while sleep "$BATTERY_LEVEL_CHECKER_TIMEOUT"; do
+	[ "$(cat "$POWER_SUPPLY_DIR"/capacity)" -le "$BATTERY_LOW_LEVEL_FROM" ] && \
+	[ "$(cat "$POWER_SUPPLY_DIR"/status)" != "Charging" ] && \
+			notify-send -u critical "🔋 Battery level checker" "Low battery level."
+done

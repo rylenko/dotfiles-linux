@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Select a wallpaper
+filenames=$(ls "$WALLPAPERS_DIR")
+selected="$(echo "$filenames" | dmenu -b -i -p "Which wallpaper?")"
+{ [ -z "$selected" ] || [ -n "${filenames##*"$selected"*}" ]; } && exit 1
+
+# Set new wallpaper
+ln -sf "$WALLPAPERS_DIR/$selected" "$CURRENT_WALLPAPER_PATH" &&
+set-wallpaper &&
+notify-send "✅ Wallpaper" "$selected is successfully set."

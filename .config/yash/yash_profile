@@ -1,0 +1,43 @@
+#!/bin/sh
+
+. "$HOME/.cargo/env"
+
+# Programs
+export \
+    EDITOR="vis" \
+    BROWSER="qutebrowser"
+# System paths
+export \
+    LESSHISTFILE="-" \
+    PATH="$PATH:$HOME/.local/bin" \
+    WGETRC="$HOME/.config/wget/wgetrc"
+# User paths
+export \
+    WPA_SUPPLICANT_MAIN_CONFIG_PATH="/etc/wpa_supplicant/wpa_supplicant-wlo1.conf" \
+    WPA_SUPPLICANT_CONFIGS_DIR="$HOME/.config/wpa_supplicant" \
+    WALLPAPERS_DIR="$HOME/.local/share/wallpapers" \
+    CURRENT_WALLPAPER_PATH="$HOME/.local/share/wallpaper"
+# Battery level checker
+export \
+    BATTERY_LEVEL_CHECKER_TIMEOUT=120 \
+    BATTERY_LOW_LEVEL_FROM=9 \
+    POWER_SUPPLY_DIR=/sys/class/power_supply/BAT1
+# Rust
+export \
+    RUSTFLAGS="-C target-feature=-crt-static"
+# Virtual Env
+export \
+    OSTYPE="Linux"
+# Less
+export \
+	LESS=-R \
+	LESS_TERMCAP_mb="[1;31m" \
+	LESS_TERMCAP_md="[1;34m" \
+	LESS_TERMCAP_me="[0m" \
+	LESS_TERMCAP_so="[1;34m" \
+	LESS_TERMCAP_se="[0m" \
+	LESS_TERMCAP_us="[1;33m" \
+	LESS_TERMCAP_ue="[0m" \
+	LESSOPEN="| /usr/bin/highlight -O ansi %s 2>/dev/null"
+
+[ -z "$DISPLAY" ] && exec startx

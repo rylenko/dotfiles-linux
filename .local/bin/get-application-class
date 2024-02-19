@@ -1,0 +1,4 @@
+#!/bin/sh
+
+(class=$(xprop | grep CLASS) && notify-send "🖥️ Application Class" "$class.") \
+	|| notify-send "🖥️ Application Class" "Failed to get."

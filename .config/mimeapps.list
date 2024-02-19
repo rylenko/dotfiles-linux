@@ -1,0 +1,16 @@
+[Default Applications]
+text/plain=text.desktop;
+text/x-shellscript=text.desktop;
+text/x-script.python=text.desktop;
+inode/x-empty=text.desktop;
+image/png=image.desktop;
+image/jpeg=image.desktop;
+image/gif=image.desktop;
+application/pdf=book.desktop;
+application/postscript=book.desktop;
+text/xml=book.desktop;
+video/x-matroska=video.desktop;
+video/webm=video.desktop;
+audio/mpeg=audio.desktop;
+x-scheme-handler/magnet=torrent.desktop;
+application/x-bittorrent=torrent.desktop;
