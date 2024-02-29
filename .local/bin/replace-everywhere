@@ -1,0 +1,20 @@
+#!/bin/sh
+#
+# Usage: `replace-everywhere <from> <to> <path1>, ..., <pathN>`
+
+# Save arguments before shifts
+
+from="$1"
+to="$2"
+
+# Move to paths
+shift
+shift
+
+for path in "$@"; do
+	if [ -d "${path}" ]; then
+		find "${path}" -type f -exec sed -i "s/$from/$to/" {} \;
+	else
+		sed -i "s/$from/$to/" "$path"
+	fi
+done
