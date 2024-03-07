@@ -4,7 +4,7 @@ HANDLERS="browser\\ndl-audio\\ndl-video-720p\\ndl-video-1080p\\nmpv\\nnsxiv\\nad
 
 # Usage: `add_torrent <url>`
 add_torrent() {
-	pidof transmission-daemon >/dev/null \
+	pidof transmission-daemon \
 		|| (transmission-daemon \
 			&& notify-send "🔽 Torrent" "Starting transmission-daemon..." \
 			&& sleep 3)
@@ -36,18 +36,18 @@ dl_video() {
 
 # Usage: `open_in_browser <url>`
 open_in_browser() {
-	setsid -f "$BROWSER" "$1" >/dev/null 2>&1
+	setsid -f "$BROWSER" "$1" 2>&1
 }
 
 # Usage: `play_with_mpv <url>`
 play_with_mpv() {
-	setsid -f mpv -quiet "$1" >/dev/null 2>&1
+	setsid -f mpv -quiet "$1" 2>&1
 }
 
 # Usage: `show_using <url> <program>`
 show_using() {
 	path=$(_download_temp "$1")
-	setsid -f "$2" "$path" >/dev/null 2>&1
+	setsid -f "$2" "$path" 2>&1
 }
 
 # Usage: `_download_temp <url>`
