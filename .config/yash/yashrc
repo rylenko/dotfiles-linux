@@ -1,5 +1,4 @@
 #!/bin/sh
-
 # enable bash-like extended expansion set --brace-expand enable recursive pathname expansion
 set --extended-glob
 # prevent redirections from overwriting existing files
@@ -220,6 +219,9 @@ if [ -e "$1" ] && ! [ -d "$1" ]; then
 fi
 COMMAND_NOT_FOUND_HANDLER=("$COMMAND_NOT_FOUND_HANDLER" '_file_type "$@"')
 
+# To sign git commits
+export GPG_TTY="$(tty)"
+
 # Movement
 alias -- -='cd -'
 # Files
@@ -242,10 +244,12 @@ alias \
 	so="doas swapoff -a"
 # Programs
 alias \
+	cgr="git config user.name rylenko && git config user.email rylenko@tuta.io && git config user.signingkey 0C8755F6E37D3493 && git config commit.gpgsign true && git config core.sshCommand \"ssh -i ~/.ssh/daily\"" \
 	gp="gpg --gen-random --armor 1 30" \
 	m="TERM=st mdp" \
 	v="vis" \
 	z="zathura" \
+	t="tmux -u" \
 	trem="transmission-remote"
 # Requests
 alias \
