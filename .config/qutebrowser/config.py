@@ -9,6 +9,7 @@ SEARCH_ENGINES = {
 }
 ENABLE_JAVASCRIPT_FOR = (
     "*://crates.io/*",
+    "*://github.com/*"
     "*://localhost:*/*",
     "*://wallhaven.cc/*",
 )
