@@ -1,1 +1,1 @@
-vis:command("set theme nord")
+vis:command("set theme minimal-dark-clear")
