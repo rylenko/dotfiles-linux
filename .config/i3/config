@@ -39,17 +39,17 @@ bindsym $mod+Shift+g	    gaps inner current set 0; gaps outer current set 0
 # h
 bindsym $mod+h              focus left
 bindsym $mod+Shift+h	    move left 30
-bindsym $mod+Ctrl+h	        move workspace to output left
+bindsym $mod+Ctrl+h         move workspace to output left
 # j
-bindsym $mod+j			    focus down
+bindsym $mod+j              focus down
 bindsym $mod+Shift+j        move down 30
 # k
 bindsym $mod+k	            focus up
 bindsym $mod+Shift+k	    move up 30
 # l
-bindsym $mod+l			    focus right
+bindsym $mod+l              focus right
 bindsym $mod+Shift+l	    move right 30
-bindsym $mod+Ctrl+l		    move workspace to output right
+bindsym $mod+Ctrl+l         move workspace to output right
 # m
 bindsym $mod+m              exec $term -e ncmpcpp
 # n
@@ -65,8 +65,11 @@ bindsym $mod+Shift+p        exec --no-startup-id dmenu-doas reboot
 # q
 bindsym $mod+q              exec qutebrowser
 # s
-bindsym --release $mod+s	exec --no-startup-id make-screenshot
+bindsym --release $mod+s    exec --no-startup-id make-screenshot
 bindsym $mod+Shift+s        exec --no-startup-id pkill $term
+# t
+bindsym $mod+t              exec --no-startup-id xinput disable 12
+bindsym $mod+Shift+t        exec --no-startup-id xinput enable 12
 # u
 bindsym $mod+u              exec --no-startup-id dmenu-handle-link
 # v
