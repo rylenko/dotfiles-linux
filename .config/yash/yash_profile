@@ -9,7 +9,7 @@ export \
 # System paths
 export \
     LESSHISTFILE="-" \
-    PATH="$PATH:$HOME/.local/bin" \
+    PATH="$PATH:$HOME/.local/bin:/usr/local/go/bin:$HOME/go/bin" \
     WGETRC="$HOME/.config/wget/wgetrc"
 # User paths
 export \
